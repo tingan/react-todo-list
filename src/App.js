@@ -32,6 +32,7 @@ class App extends Component {
     this.deleteTodo = this.deleteTodo.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleSearchText = this.handleSearchText.bind(this);
   }
 
   handleChange(event) {
@@ -40,15 +41,24 @@ class App extends Component {
     });
   }
 
-  handleSearch(event) {
+  handleSearchText(event) {
     this.setState({
       searchTodo: event.target.value
     });
-    if (event.target.value.trim().length > 0) {
-      let filtered_arr = this.state.todos.filter(function(item){
-        return item.name.toLowerCase().indexOf(event.target.value.toLowerCase()) !== -1
+    if (event.target.value.trim().length == 0) {
+      this.setState( {
+        filtering: false,
+        editing: false,
+        filters: []
       });
-      console.log(filtered_arr);
+    }
+  }
+  handleSearch() {
+    let searchTxt = this.state.searchTodo;
+    if (searchTxt.trim().length > 0) {
+      let filtered_arr = this.state.todos.filter(function(item){
+        return item.name.toLowerCase().indexOf(searchTxt.toLowerCase()) !== -1
+      });
       this.setState( {
         filtering: true,
         editing: false,
@@ -198,9 +208,15 @@ class App extends Component {
             name="search-input"
             className="form-control form-search"
             placeholder="Search todos"
-            onChange={this.handleSearch}
+            onChange={this.handleSearchText}
             value={this.state.searchTodo}
             />
+               <button
+                 onClick={this.handleSearch}
+                 className="btn-search mb-3 form-control"
+                 disabled={this.state.searchTodo.trim().length < 1}
+               >Search
+               </button>
              </div>
           }
           {
@@ -226,9 +242,15 @@ class App extends Component {
                     name="search-input"
                     className="form-control form-search"
                     placeholder="Search todos"
-                    onChange={this.handleSearch}
+                    onChange={this.handleSearchText}
                     value={this.state.searchTodo}
                   />
+                  <button
+                    onClick={this.handleSearch}
+                    className="btn-search mb-3 form-control"
+                    disabled={this.state.searchTodo.trim().length < 1}
+                  >Search
+                  </button>
                 </div>
               </div>
           }
