@@ -1,6 +1,4 @@
-import axios from 'axios';
 import React, {Component} from 'react';
-import loadingGif from './loading.gif';
 import './App.css';
 
 import ListItem from './ListItem';
@@ -10,30 +8,31 @@ class App extends Component {
     super();
     this.state = {
       newTodo: '',
+      searchTodo: '',
       editing: false,
       editingIndex: null,
       notification: null,
-      todos: [],
-      loading: true
+      todos: [{
+        id: 1, name: 'Play golf'
+      }, {
+        id: 2, name: 'Buy some clothes'
+      }, {
+        id: 3, name: 'Buy milk'
+      }, {
+        id: 4, name: 'Watch TV'
+      }],
+      filtered_todos: [],
+      loading: true,
+      filtering: false,
     };
 
-    this.apiUrl = 'http://5c339adee0948000147a781d.mockapi.io';
 
     this.alert = this.alert.bind(this);
     this.addTodo = this.addTodo.bind(this);
     this.updateTodo = this.updateTodo.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
     this.handleChange = this.handleChange.bind(this);
-  }
-
-  async componentDidMount() {
-    const response = await axios.get(`${this.apiUrl}/todos`);
-    setTimeout(() => {
-      this.setState({
-        todos: response.data,
-        loading: false
-      });
-    }, 1000);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   handleChange(event) {
@@ -42,15 +41,39 @@ class App extends Component {
     });
   }
 
-  async addTodo() {
+  handleSearch(event) {
+    console.log(this.state.todos);
+    if (event.target.value.trim().length() > 1) {
+      this.setState( {
+        filtering: true,
+      });
+    }
+    else {
+      this.setState( {
+        filtering: false,
+      });
+    }
 
-    const response = await axios.post(`${this.apiUrl}/todos`, {
-      name: this.state.newTodo
-    });
+  }
 
+
+  generateTodoId() {
+    const lastTodo = this.state.todos[this.state.todos.length - 1];
+    if (lastTodo) {
+      return lastTodo.id + 1;
+    }
+
+    return 1;
+  }
+
+  addTodo() {
+    const newTodo = {
+      name: this.state.newTodo,
+      id: this.generateTodoId()
+    };
 
     const todos = this.state.todos;
-    todos.push(response.data);
+    todos.push(newTodo);
 
     this.setState({
       todos: todos,
@@ -68,14 +91,13 @@ class App extends Component {
     });
   }
 
-  async updateTodo() {
+  updateTodo() {
     const todo = this.state.todos[this.state.editingIndex];
 
-    const response = await axios.put(`${this.apiUrl}/todos/${todo.id}`, {
-      name: this.state.newTodo
-    });
+    todo.name = this.state.newTodo;
+
     const todos = this.state.todos;
-    todos[this.state.editingIndex] = response.data;
+    todos[this.state.editingIndex] = todo;
     this.setState({
       todos,
       editing: false,
@@ -97,17 +119,13 @@ class App extends Component {
     }, 2000);
   }
 
-  async deleteTodo(index) {
+  deleteTodo(index) {
     const todos = this.state.todos;
-    const todo = todos[index];
-
-    await axios.delete(`${this.apiUrl}/todos/${todo.id}`);
     delete todos[index];
 
-    this.setState({todos});
+    this.setState({ todos });
     this.alert('Todo deleted successfully.');
   }
-
   render() {
     return (
       <div className="App">
@@ -115,6 +133,7 @@ class App extends Component {
           <h1 className="App-title">React ToDo List</h1>
         </header>
         <div className="container">
+
           {
             this.state.notification &&
             <div className="alert mt-3 alert-success">
@@ -129,6 +148,7 @@ class App extends Component {
             onChange={this.handleChange}
             value={this.state.newTodo}
           />
+
           <button
             onClick={this.state.editing ? this.updateTodo : this.addTodo}
             className="btn-success mb-3 form-control"
@@ -137,11 +157,8 @@ class App extends Component {
             {this.state.editing ? 'Update todo' : 'Add todo'}
           </button>
           {
-            this.state.loading &&
-            <img src={loadingGif} alt="" className="center" />
-          }
-          {
-            (!this.state.editing || this.state.loading) &&
+            (!this.state.editing) &&
+             <div>
             <ul className="list-group">
               {this.state.todos.map((item, index) => {
                 return <ListItem
@@ -156,6 +173,15 @@ class App extends Component {
                 />;
               })}
             </ul>
+            <input
+            type="text"
+            name="search-input"
+            className="form-control form-search"
+            placeholder="Search todos"
+            onChange={this.handleSearch}
+            value={this.state.searchTodo}
+            />
+             </div>
           }
         </div>
       </div>
