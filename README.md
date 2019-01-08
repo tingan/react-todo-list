@@ -1,6 +1,6 @@
 # React ToDo List App
 
-The todo list apps mostly only have simple CRUD function, this app add searching function also. The technologies used include:
+The todo list apps mostly only have simple CRUD function, this app adds searching function also. The technologies used include:
 * React create app
 * Plain CSS
 * FontAwesome
