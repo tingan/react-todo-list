@@ -75,13 +75,20 @@ ul>li:hover {
     float: right;
 }
 
+.btn-add {
+    margin-left: 10px;
+}
+
 .center {
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
 }
-
+.form-group {
+    display: inline-block;
+    margin-top: 20px;
+}
 .form-control {
     display: inline-block;
     line-height: 1.5;
@@ -90,6 +97,9 @@ ul>li:hover {
     font-size: 1rem;
 }
 
+.form-search {
+    margin-bottom: 20px;
+}
 .alert-success {
     color: #155724;
     background-color: #d4edda;

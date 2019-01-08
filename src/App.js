@@ -21,8 +21,7 @@ class App extends Component {
       }, {
         id: 4, name: 'Watch TV'
       }],
-      filtered_todos: [],
-      loading: true,
+      filters: [],
       filtering: false,
     };
 
@@ -42,15 +41,25 @@ class App extends Component {
   }
 
   handleSearch(event) {
-    console.log(this.state.todos);
-    if (event.target.value.trim().length() > 1) {
+    this.setState({
+      searchTodo: event.target.value
+    });
+    if (event.target.value.trim().length > 0) {
+      let filtered_arr = this.state.todos.filter(function(item){
+        return item.name.toLowerCase().indexOf(event.target.value.toLowerCase()) !== -1
+      });
+      console.log(filtered_arr);
       this.setState( {
         filtering: true,
+        editing: false,
+        filters: filtered_arr
       });
     }
     else {
       this.setState( {
         filtering: false,
+        editing: false,
+        filters: []
       });
     }
 
@@ -83,9 +92,12 @@ class App extends Component {
   }
 
   editTodo(index) {
+    index = this.state.todos.findIndex(x => x.id == index);
     const todo = this.state.todos[index];
     this.setState({
       editing: true,
+      filtering: false,
+      searchTodo: '',
       newTodo: todo.name,
       editingIndex: index
     });
@@ -99,7 +111,7 @@ class App extends Component {
     const todos = this.state.todos;
     todos[this.state.editingIndex] = todo;
     this.setState({
-      todos,
+      todos: todos,
       editing: false,
       editingIndex: null,
       newTodo: ''
@@ -120,10 +132,16 @@ class App extends Component {
   }
 
   deleteTodo(index) {
+    index = this.state.todos.findIndex(x => x.id == index);
     const todos = this.state.todos;
     delete todos[index];
 
-    this.setState({ todos });
+    this.setState({
+      todos: todos,
+      editing: false,
+      filtering: false,
+      searchTodo: '',
+    });
     this.alert('Todo deleted successfully.');
   }
   render() {
@@ -140,6 +158,8 @@ class App extends Component {
               <p className="text-center">{this.state.notification}</p>
             </div>
           }
+          <div className="form-group">
+
           <input
             type="text"
             name="todo"
@@ -148,16 +168,16 @@ class App extends Component {
             onChange={this.handleChange}
             value={this.state.newTodo}
           />
-
+          </div>
           <button
             onClick={this.state.editing ? this.updateTodo : this.addTodo}
-            className="btn-success mb-3 form-control"
+            className="btn-add mb-3 form-control"
             disabled={this.state.newTodo.trim().length < 1}
           >
             {this.state.editing ? 'Update todo' : 'Add todo'}
           </button>
           {
-            (!this.state.editing) &&
+            (!this.state.editing && !this.state.filtering) &&
              <div>
             <ul className="list-group">
               {this.state.todos.map((item, index) => {
@@ -165,10 +185,10 @@ class App extends Component {
                   key={item.id}
                   item={item}
                   editTodo={() => {
-                    this.editTodo(index);
+                    this.editTodo(item.id);
                   }}
                   deleteTodo={() => {
-                    this.deleteTodo(index);
+                    this.deleteTodo(item.id);
                   }}
                 />;
               })}
@@ -182,6 +202,35 @@ class App extends Component {
             value={this.state.searchTodo}
             />
              </div>
+          }
+          {
+            (!this.state.editing && this.state.filtering) &&
+              <div>
+                <div>
+                  <ul className="list-group">
+                    {this.state.filters.map((item, index) => {
+                      return <ListItem
+                        key={item.id}
+                        item={item}
+                        editTodo={() => {
+                          this.editTodo(item.id);
+                        }}
+                        deleteTodo={() => {
+                          this.deleteTodo(item.id);
+                        }}
+                      />;
+                    })}
+                  </ul>
+                  <input
+                    type="text"
+                    name="search-input"
+                    className="form-control form-search"
+                    placeholder="Search todos"
+                    onChange={this.handleSearch}
+                    value={this.state.searchTodo}
+                  />
+                </div>
+              </div>
           }
         </div>
       </div>
