@@ -71,10 +71,12 @@ ul > li:hover {
 
 .btn-update {
     float: left;
+    margin-top: 8px;
 }
 
 .btn-delete {
     float: right;
+    margin-top: 8px;
 }
 
 .btn-add {
