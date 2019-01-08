@@ -134,7 +134,7 @@ class App extends Component {
   deleteTodo(index) {
     index = this.state.todos.findIndex(x => x.id == index);
     const todos = this.state.todos;
-    delete todos[index];
+    todos.splice(index, 1);
 
     this.setState({
       todos: todos,
