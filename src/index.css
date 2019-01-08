@@ -42,6 +42,7 @@ body {
     background-color: #D1BDB7;
     height: 80px;
     position: relative;
+    margin-top: 30px;
 }
 
 .App-title {
