@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, {Component} from 'react';
-import logo from './logo.svg';
 import loadingGif from './loading.gif';
 import './App.css';
 
@@ -139,7 +138,7 @@ class App extends Component {
           </button>
           {
             this.state.loading &&
-            <img src={loadingGif} alt=""/>
+            <img src={loadingGif} alt="" className="center" />
           }
           {
             (!this.state.editing || this.state.loading) &&

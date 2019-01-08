@@ -50,3 +50,18 @@ ul>li:hover {
     padding: 10px 15px;
     border: 1px solid #ddd;
 }
+
+.btn-update {
+    float: left;
+}
+
+.btn-delete {
+    float: right;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}

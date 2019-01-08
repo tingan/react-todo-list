@@ -1,16 +1,17 @@
 import React from 'react';
+import '../node_modules/font-awesome/css/font-awesome.min.css'
 
 const ListItem = (props) => {
   return <li className="list-group-item">
     <button
-      className="btn-sm mr-4 btn btn-info"
+      className="btn-update"
       onClick={props.editTodo}
-    >U</button>
+    ><i className="fa fa-pencil"></i></button>
     {props.item.name}
     <button
-      className="btn-sm ml-4 btn btn-danger"
+      className="btn-delete"
       onClick={props.deleteTodo}
-    >X</button>
+    ><i className="fa fa-remove"></i></button>
   </li>;
 };
 
