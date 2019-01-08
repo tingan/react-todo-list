@@ -46,27 +46,27 @@ class App extends Component {
       searchTodo: event.target.value
     });
     if (event.target.value.trim().length == 0) {
-      this.setState( {
+      this.setState({
         filtering: false,
         editing: false,
         filters: []
       });
     }
   }
+
   handleSearch() {
     let searchTxt = this.state.searchTodo;
     if (searchTxt.trim().length > 0) {
-      let filtered_arr = this.state.todos.filter(function(item){
+      let filtered_arr = this.state.todos.filter(function (item) {
         return item.name.toLowerCase().indexOf(searchTxt.toLowerCase()) !== -1
       });
-      this.setState( {
+      this.setState({
         filtering: true,
         editing: false,
         filters: filtered_arr
       });
-    }
-    else {
-      this.setState( {
+    } else {
+      this.setState({
         filtering: false,
         editing: false,
         filters: []
@@ -154,6 +154,7 @@ class App extends Component {
     });
     this.alert('Todo deleted successfully.');
   }
+
   render() {
     return (
       <div className="App">
@@ -170,14 +171,14 @@ class App extends Component {
           }
           <div className="form-group">
 
-          <input
-            type="text"
-            name="todo"
-            className="my-4 form-control"
-            placeholder="Add a new todo"
-            onChange={this.handleChange}
-            value={this.state.newTodo}
-          />
+            <input
+              type="text"
+              name="todo"
+              className="my-4 form-control"
+              placeholder="Add a new todo"
+              onChange={this.handleChange}
+              value={this.state.newTodo}
+            />
           </div>
           <button
             onClick={this.state.editing ? this.updateTodo : this.addTodo}
@@ -188,71 +189,71 @@ class App extends Component {
           </button>
           {
             (!this.state.editing && !this.state.filtering) &&
-             <div>
-            <ul className="list-group">
-              {this.state.todos.map((item, index) => {
-                return <ListItem
-                  key={item.id}
-                  item={item}
-                  editTodo={() => {
-                    this.editTodo(item.id);
-                  }}
-                  deleteTodo={() => {
-                    this.deleteTodo(item.id);
-                  }}
-                />;
-              })}
-            </ul>
-            <input
-            type="text"
-            name="search-input"
-            className="form-control form-search"
-            placeholder="Search todos"
-            onChange={this.handleSearchText}
-            value={this.state.searchTodo}
-            />
-               <button
-                 onClick={this.handleSearch}
-                 className="btn-search mb-3 form-control"
-                 disabled={this.state.searchTodo.trim().length < 1}
-               >Search
-               </button>
-             </div>
+            <div>
+              <ul className="list-group">
+                {this.state.todos.map((item, index) => {
+                  return <ListItem
+                    key={item.id}
+                    item={item}
+                    editTodo={() => {
+                      this.editTodo(item.id);
+                    }}
+                    deleteTodo={() => {
+                      this.deleteTodo(item.id);
+                    }}
+                  />;
+                })}
+              </ul>
+              <input
+                type="text"
+                name="search-input"
+                className="form-control form-search"
+                placeholder="Search todos"
+                onChange={this.handleSearchText}
+                value={this.state.searchTodo}
+              />
+              <button
+                onClick={this.handleSearch}
+                className="btn-search mb-3 form-control"
+                disabled={this.state.searchTodo.trim().length < 1}
+              >Search
+              </button>
+            </div>
           }
           {
             (!this.state.editing && this.state.filtering) &&
+            <div>
               <div>
-                <div>
-                  <ul className="list-group">
-                    {this.state.filters.map((item, index) => {
-                      return <ListItem
-                        key={item.id}
-                        item={item}
-                        editTodo={() => {
-                          this.editTodo(item.id);
-                        }}
-                        deleteTodo={() => {
-                          this.deleteTodo(item.id);
-                        }}
-                      />;
-                    })}
-                  </ul>
-                  <input
-                    type="text"
-                    name="search-input"
-                    className="form-control form-search"
-                    placeholder="Search todos"
-                    onChange={this.handleSearchText}
-                    value={this.state.searchTodo}
-                  />
-                  <button
-                    onClick={this.handleSearch}
-                    className="btn-search mb-3 form-control"
-                    disabled={this.state.searchTodo.trim().length < 1}
-                  >Search
-                  </button>
-                </div>
+                <ul className="list-group">
+                  {this.state.filters.map((item, index) => {
+                    return <ListItem
+                      key={item.id}
+                      item={item}
+                      editTodo={() => {
+                        this.editTodo(item.id);
+                      }}
+                      deleteTodo={() => {
+                        this.deleteTodo(item.id);
+                      }}
+                    />;
+                  })}
+                </ul>
+                <input
+                  type="text"
+                  name="search-input"
+                  className="form-control form-search"
+                  placeholder="Search todos"
+                  onChange={this.handleSearchText}
+                  value={this.state.searchTodo}
+                />
+                <button
+                  onClick={this.handleSearch}
+                  className="btn-search mb-3 form-control"
+                  disabled={this.state.searchTodo.trim().length < 1}
+                >Search
+                </button>
               </div>
+            </div>
           }
         </div>
       </div>
