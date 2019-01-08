@@ -3,6 +3,7 @@
 The todo list apps mostly only have simple CRUD function, this app add searching function also. The technologies used include:
 * React create app
 * Plain CSS
+* FontAwesome
 * Webpack-dev-server
 
 ## Install the Application
